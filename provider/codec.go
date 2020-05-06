@@ -5,6 +5,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	"github.com/cosmos/cosmos-sdk/x/distribution"
+	"github.com/cosmos/cosmos-sdk/x/gov"
+	"github.com/cosmos/cosmos-sdk/x/params"
+	"github.com/cosmos/cosmos-sdk/x/slashing"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	"github.com/bandprotocol/bandchain/chain/x/zoracle"
@@ -19,6 +22,9 @@ func NewCodec() *codec.Codec {
 	zoracle.RegisterCodec(cdc)
 	codec.RegisterCrypto(cdc)
 	staking.RegisterCodec(cdc)
+	slashing.RegisterCodec(cdc)
 	distribution.RegisterCodec(cdc)
+	gov.RegisterCodec(cdc)
+	params.RegisterCodec(cdc)
 	return cdc
 }

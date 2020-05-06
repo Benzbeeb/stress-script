@@ -35,8 +35,8 @@ func main() {
 
 	case "send-beeb":
 		root := getPrivKeys("root.txt", 1)[0]
-		beeb,_ := sdk.AccAddressFromBech32("band17sajqk0gga2s27hvv3u8vgayyp4zr5xfwhza59")
-		fmt.Println(sendCoin(root,[]sdk.AccAddress{beeb} , 10000000, 30000))
+		beeb, _ := sdk.AccAddressFromBech32("band1qvw9xyk9yq47ddadtlmhq7c373673a2smxse59")
+		fmt.Println(sendCoin(root, []sdk.AccAddress{beeb}, 20000000000, 30000))
 	case "many-send":
 		// Send 20 uband to 100 accounts
 		root := getPrivKeys("root.txt", 1)[0]
@@ -91,10 +91,21 @@ func main() {
 		// Create idle validator
 		root := getPrivKeys("root.txt", 1)[0]
 		createValidator(root, sdk.NewInt64Coin("uband", 20000000000))
-
+	case "unjail":
+		root := getPrivKeys("root.txt", 1)[0]
+		validators := []sdk.ValAddress{
+			mustValAddressFromBech32("bandvaloper1vdxjazxr9rmkxg6awtrmzrur292d3ld84kmck8"),
+		}
+		delegate(root, validators, 2000000)
+		fmt.Println(unjail(root))
+	case "community-spend":
+		root := getPrivKeys("root.txt", 1)[0]
+		fmt.Println(sendCommunityPoolSpendProposal(root, "proposals/community-pool-spend.json"))
+	case "update-parameter":
+		root := getPrivKeys("root.txt", 1)[0]
+		fmt.Println(sendUpdateParams(root, "proposals/param-change.json"))
 	default:
 		fmt.Println("Invalid command")
-
 	}
 
 	select {}

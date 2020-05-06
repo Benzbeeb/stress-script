@@ -1,0 +1,11 @@
+{
+  "title": "Change params test",
+  "description": "I want to increase max sigs",
+  "changes": [
+    {
+      "subspace": "gov",
+      "key": "votingparams",
+      "value": "{\"voting_period\": \"500000000000\"}"
+    }
+  ]
+}

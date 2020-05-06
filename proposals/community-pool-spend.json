@@ -1,0 +1,11 @@
+{
+  "title": "Community Pool Spend",
+  "description": "Pay me some Band!",
+  "recipient": "band1vdxjazxr9rmkxg6awtrmzrur292d3ld8eqlmnv",
+  "amount": [
+    {
+      "amount": "1000000000",
+      "denom": "uband"
+    }
+  ]
+}
