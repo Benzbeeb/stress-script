@@ -55,6 +55,19 @@ func withdraw(from secp256k1.PrivKeySecp256k1, validators []sdk.ValAddress) (sdk
 	}
 	return p.SendTransaction(msgs, 0, 200000, "", "", flags.BroadcastBlock)
 }
+func withdrawValidatorCommission(from secp256k1.PrivKeySecp256k1, validators []sdk.ValAddress) (sdk.TxResponse, error) {
+	p, err := provider.NewBandProvider(nodeURI, from, chainID)
+	if err != nil {
+		panic(err)
+	}
+	msgs := make([]sdk.Msg, 0)
+
+	msgs = append(msgs, distribution.MsgWithdrawValidatorCommission{
+		ValidatorAddress: sdk.ValAddress(p.Sender()),
+	})
+
+	return p.SendTransaction(msgs, 0, 200000, "", "", flags.BroadcastBlock)
+}
 
 func createValidator(from secp256k1.PrivKeySecp256k1, amount sdk.Coin) (sdk.TxResponse, error) {
 	p, err := provider.NewBandProvider(nodeURI, from, chainID)
@@ -69,6 +82,24 @@ func createValidator(from secp256k1.PrivKeySecp256k1, amount sdk.Coin) (sdk.TxRe
 				sdk.NewDecWithPrec(2, 1),
 				sdk.NewDecWithPrec(1, 1),
 			), amount.Amount,
+		),
+	}
+	return p.SendTransaction(msgs, 0, 200000, "Create new validator", "", flags.BroadcastBlock)
+}
+
+func editValidator(from secp256k1.PrivKeySecp256k1) (sdk.TxResponse, error) {
+	p, err := provider.NewBandProvider(nodeURI, from, chainID)
+	if err != nil {
+		panic(err)
+	}
+	newRate := sdk.ZeroDec()
+	newMinSelfDelegation := sdk.OneInt()
+	msgs := []sdk.Msg{
+		staking.NewMsgEditValidator(
+			sdk.ValAddress(p.Sender()),
+			staking.NewDescription("Test Beeb", "beeb", "beeb.beeb", "Can I have your picture so I can show Santa what I want for Christmas?"),
+			&newRate,
+			&newMinSelfDelegation,
 		),
 	}
 	return p.SendTransaction(msgs, 0, 200000, "Create new validator", "", flags.BroadcastBlock)
